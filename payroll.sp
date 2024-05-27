@@ -16,6 +16,9 @@ BEGIN
             
             IF overtime_hours IS NULL THEN
                 overtime_hours := 0;
+                IF overtime_hours IS NULL THEN
+                    overtime_hours := 0;
+                END IF;
             END IF;
             
             overtime_pay := overtime_hours * (rec.base_salary / 160) * overtime_rate;  -- 160시간 기준

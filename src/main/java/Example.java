@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -10,9 +11,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Example {
     public static void main(String[] args) throws IOException {
-        InputStream in = new FileInputStream("payroll.sp");
-        // InputStream in = new
-        // FileInputStream("/Users/uengine/Documents/modernizer/pg_pay_pay.pck");
+        // InputStream in = new FileInputStream("payroll.sp");
+        InputStream in = new FileInputStream("/Users/uengine/Documents/payroll/sp/pg_pay_pay.pck");
         CharStream s = CharStreams.fromStream(in);
 
         CaseChangingCharStream upper = new CaseChangingCharStream(s, true);
@@ -31,6 +31,14 @@ public class Example {
         walker.walk(listener, tree); // 리스너를 구문 분석 트리에 연결합니다.
 
         listener.printStructure();
+
+        System.out.println(listener.getRoot().toJson());
+        try (FileWriter file = new FileWriter("structure.json")) {
+            file.write(listener.getRoot().toJson());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
